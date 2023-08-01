@@ -1,5 +1,6 @@
 package com.yse.dev.book.controller;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
@@ -17,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.yse.dev.book.dto.BookCreateDTO;
 import com.yse.dev.book.dto.BookEditDTO;
 import com.yse.dev.book.dto.BookEditResponseDTO;
+import com.yse.dev.book.dto.BookListResponseDTO;
 import com.yse.dev.book.dto.BookReadResponseDTO;
 import com.yse.dev.book.service.BookService;
 
@@ -81,6 +83,14 @@ public class BookController {
 	public String delete(Integer bookId) throws NoSuchElementException{
 		this.bookService.delete(bookId);
 		return "redirect:/book/list";
+	}
+	
+	@GetMapping(value= {"/book/list", "/book"})
+	public ModelAndView bookList(String title, Integer page, ModelAndView mav){
+		mav.setViewName("/book/list");
+		List<BookListResponseDTO> books = this.bookService.bookList(title, page);
+		mav.addObject("books", books);
+		return mav;
 	}
 
 
